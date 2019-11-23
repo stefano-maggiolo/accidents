@@ -1,0 +1,52 @@
+STATE_ALPHA,TZ_NO_DST,TZ_DST,NOTE
+AL,-90,-75,
+AK,-135,-120,Aleutian Islands Hawaii-Aleutian Standard Time (HST)
+AZ,-105,-105,The Navajo Nation uses Daylight Saving Time (DST) the rest of the state does not
+AR,-90,-75,
+CA,-120,-105,
+CO,-105,-90,
+CT,-75,-60,
+DE,-75,-60,
+FL,-75,-60,West of the Apalachicola River: -90 -75
+GA,-75,-60,
+HI,-150,-150,Hawaii does not use Daylight Saving Time (DST)
+ID,-105,-90,North of the Salmon River: -120 -105
+IL,-90,-75
+IN,-75,-60,Some counties near the southwestern and northwestern border of the state use -90 -75
+IA,-90,-75,
+KS,-90,-75,Greeley Hamilton Sherman and Wallace counties: -105 -90
+KY,-90,-75,Eastern half of the state: -75 -60
+LA,-90,-75,
+ME,-75,-60,
+MD,-75,-60,
+MA,-75,-60,
+MI,-75,-60,Dickinson Gogebic Iron and Menominee Counties: -90 -75
+MN,-90,-75,
+MS,-90,-75,
+MO,-90,-75,
+MT,-105,-90,
+NE,-90,-75,Western part of the state: -105 -90
+NV,-120,-105,Jackpot and West Wendover: -105 -90
+NH,-75,-60,
+NJ,-75,-60,
+NM,-105,-90,
+NY,-75,-60,
+NC,-75,-60,
+ND,-90,-75,Western North Dakota: -105 -90
+OH,-75,-60,
+OK,-90,-75,
+OR,-120,-105,Part of Malheur County: -105 -90
+PA,-75,-60,
+RI,-75,-60,
+SC,-75,-60,
+SD,-90,-75,Western South Dakota: -105 -90
+TN,-90,-75,Middle Tennessee plus Marion County: -90 -75  East Tennessee except Marion County: -75 -60
+TX,-90,-75,El Paso and Hudspeth Counties: -105 -90
+UT,-105,-90,
+VT,-75,-60,
+VA,-75,-60,
+WA,-120,-105,
+WV,-75,-60,
+WI,-90,-75,
+WY,-105,-90,
+DC,-75,-60,
