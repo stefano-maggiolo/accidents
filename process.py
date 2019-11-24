@@ -3,6 +3,10 @@ import numpy as np
 import os
 
 
+# How large is each subdivision, in minutes.
+QUANT_MINUTES = 30
+
+
 STATES_TO_EXCLUDE = [
     1, # AK Alaska, due to the high latitude
     4, # AZ Arizona, due to lack of DST and Navajo Nation
@@ -261,6 +265,8 @@ def fill(accidents, tz, tz_override, dst):
       "DAYS_FROM_DST_SWITCH",
       "DST_DELTA",
       "DST",
+      "OFFSET_LNG",
+      "OFFSET_MINUTES",
   ]
 
   accidents = pd.merge(accidents, tz, how="left", on=["STATE_ALPHA"])
@@ -285,6 +291,14 @@ def fill(accidents, tz, tz_override, dst):
       "DAYS_FROM_DST_SWITCH": "int32",
   })
   accidents["DST"] = np.where(accidents["DST_DELTA"] == 1, "yes", "no")
+
+  accidents["OFFSET_LNG"] = np.where(
+    accidents["DST_DELTA"] == 1,
+    accidents["LNG"] - accidents["TZ_DST"],
+    accidents["LNG"] - accidents["TZ_NO_DST"])
+  accidents["OFFSET_MINUTES"] = (
+    (accidents["OFFSET_LNG"] * 60.0 / 15.0 + QUANT_MINUTES / 2.0)
+    // QUANT_MINUTES * QUANT_MINUTES)
 
   return accidents[COLS]
 

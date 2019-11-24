@@ -3,21 +3,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+import utils
 from process import main as process_main
-
-sns.set_style("whitegrid")
-
-QUANT_MINUTES = 30
-
-
-def more_process(data):
-  # Remove first week after DST switch as it might contain outliers.
-  data = data[data["DAYS_FROM_DST_SWITCH"] > 7]
-
-  data["OFFSET_LNG"] = np.where(data["DST_DELTA"] == 1, data["LNG"] - data["TZ_DST"], data["LNG"] - data["TZ_NO_DST"])
-  data["OFFSET_MINUTES"] = (data["OFFSET_LNG"] * 60.0 / 15.0 + QUANT_MINUTES / 2.0) // QUANT_MINUTES * QUANT_MINUTES
-
-  return data
 
 
 def _format_ax(ax):
@@ -33,13 +20,7 @@ def _format_ax(ax):
   return ax
 
 
-def _only_big(d):
-  return d[d.groupby(["DST", "OFFSET_MINUTES"])["STATE"].transform(len) >= 5000]
-
-
-def main():
-  data = more_process(process_main())
-
+def plot_dst_nodst_comparison(data):
   fig, ax = plt.subplots(figsize=(16, 9))
   _ = data.groupby(["DST", "HOUR"])["STATE"].count()\
           .groupby(["DST"]).transform(lambda x : x / x.sum())\
@@ -48,8 +29,8 @@ def main():
   _format_ax(ax)
   plt.savefig("plots/01_dst_nodst_comparison.png")
 
-  data = _only_big(data)
 
+def plot_by_offset(data):
   fig, ax = plt.subplots(figsize=(16, 9))
   _ = data.groupby(["DST", "OFFSET_MINUTES", "HOUR"])["STATE"].count()\
           .groupby(["DST", "OFFSET_MINUTES"]).transform(lambda x : x / x.sum())\
@@ -67,6 +48,18 @@ def main():
   sns.lineplot(data=_, x="HOUR", y="ACCIDENTS", hue="OFFSET_MINUTES", ax=ax)
   _format_ax(ax)
   plt.savefig("plots/03_dst_by_offset.png")
+
+
+def main():
+  sns.set_style("whitegrid")
+
+  data = process_main()
+
+  data = utils.remove_first_week_after_dst_switch(data)
+  plot_dst_nodst_comparison(data)
+
+  data = utils.remove_small_groups(data, ["DST", "OFFSET_MINUTES"])
+  plot_by_offset(data)
 
 
 if __name__ == "__main__":
