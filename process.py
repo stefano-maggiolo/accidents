@@ -4,7 +4,7 @@ import os
 
 
 # How large is each subdivision, in minutes.
-QUANT_MINUTES = 30
+QUANT_MINUTES = 60
 
 
 STATES_TO_EXCLUDE = [
