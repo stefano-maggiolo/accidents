@@ -8,8 +8,9 @@ from process import main as process_main
 
 
 def _format_ax(ax):
-  ax.set_xticks(range(24), minor=True)
-  ax.set_xticks(range(0, 24, 3), minor=False)
+  ax.set_xticks(range(5, 29), minor=True)
+  ax.set_xticks(range(6, 30, 3), minor=False)
+  ax.set_xticklabels(range(6, 24, 3) + range(0, 5, 3))
   ax.set_ylim(0.01, 0.07)
   ax.grid(which='major', alpha=0.8, linestyle='-')
   ax.grid(which='minor', alpha=0.5, linestyle='-')
@@ -54,8 +55,9 @@ def main():
   sns.set_style("whitegrid")
 
   data = process_main()
-
+  data["HOUR"] = np.where(data["HOUR"] <= 4, data["HOUR"] + 24, data["HOUR"])
   data = utils.remove_first_week_after_dst_switch(data)
+
   plot_dst_nodst_comparison(data)
 
   data = utils.remove_small_groups(data, ["DST", "OFFSET_MINUTES"])
