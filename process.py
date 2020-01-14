@@ -5,6 +5,16 @@ import os
 
 # How large is each subdivision, in minutes.
 QUANT_MINUTES = 60
+# Offset of the center of each quant (e.g, one quant will be
+# [QUANT_OFFSET - QUANT_MINUTES/2, QUANT_OFFSET + QUANT_MINUTES/2]
+QUANT_OFFSET = 0
+
+
+def lng_to_quant_minutes(lng):
+  return (
+    (lng * 60.0 / 15.0 - QUANT_OFFSET + QUANT_MINUTES / 2.0)
+    // QUANT_MINUTES * QUANT_MINUTES
+    + QUANT_OFFSET)
 
 
 STATES_TO_EXCLUDE = [
@@ -296,9 +306,7 @@ def fill(accidents, tz, tz_override, dst):
     accidents["DST_DELTA"] == 1,
     accidents["LNG"] - accidents["TZ_DST"],
     accidents["LNG"] - accidents["TZ_NO_DST"])
-  accidents["OFFSET_MINUTES"] = (
-    (accidents["OFFSET_LNG"] * 60.0 / 15.0 + QUANT_MINUTES / 2.0)
-    // QUANT_MINUTES * QUANT_MINUTES)
+  accidents["OFFSET_MINUTES"] = lng_to_quant_minutes(accidents["OFFSET_LNG"])
 
   return accidents[COLS]
 
