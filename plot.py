@@ -3,8 +3,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+import process
 import utils
-from process import main as process_main
 
 
 
@@ -67,7 +67,7 @@ def plot_by_offset(data):
 def main():
   sns.set_style("whitegrid")
 
-  data = process_main()
+  data = process.main()
   data["HOUR"] = np.where(data["HOUR"] <= 4, data["HOUR"] + 24, data["HOUR"])
   data = utils.remove_first_week_after_dst_switch(data)
 
