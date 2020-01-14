@@ -6,5 +6,6 @@ def remove_first_week_after_dst_switch(data):
 
 
 def remove_small_groups(
-        data, group_columns, value_column="STATE", threshold=5000):
-  return data[data.groupby(group_columns)[value_column].transform(len) >= 5000]
+        data, group_columns, value_column="STATE", threshold=10000):
+  return data[
+    data.groupby(group_columns)[value_column].transform(len) >= threshold]

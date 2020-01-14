@@ -7,7 +7,7 @@ import os
 QUANT_MINUTES = 60
 # Offset of the center of each quant (e.g, one quant will be
 # [QUANT_OFFSET - QUANT_MINUTES/2, QUANT_OFFSET + QUANT_MINUTES/2]
-QUANT_OFFSET = 0
+QUANT_OFFSET = 20
 
 
 def lng_to_quant_minutes(lng):
