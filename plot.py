@@ -8,7 +8,7 @@ import utils
 
 
 
-DIVERGENT_PALETTE=sns.color_palette("coolwarm", 3)
+DIVERGENT_PALETTE=lambda n: sns.color_palette("coolwarm", n)
 
 
 def _format_ax(ax):
@@ -23,11 +23,6 @@ def _format_ax(ax):
   ax.set_yticklabels(['{:,.2%}'.format(x) for x in vals])
 
   return ax
-
-
-def _transform_offset_for_plot(data):
-  data["OFFSET_MINUTES"] = data["OFFSET_MINUTES"].apply(
-    lambda x : "0" if int(x) == 0 else str(int(x) // 60) + "h")
 
 
 def plot_dst_nodst_comparison(data):
@@ -46,9 +41,11 @@ def plot_by_offset(data):
           .groupby(["DST", "OFFSET_MINUTES"]).transform(lambda x : x / x.sum())\
           .reset_index().rename(columns={"STATE": "ACCIDENTS"})
   _ = _[_["DST"] == "no"]
-  _transform_offset_for_plot(_)
+  keys = utils.transform_offset_for_reading(_)
   sns.lineplot(data=_, x="HOUR", y="ACCIDENTS", hue="OFFSET_MINUTES",
-               hue_order=["-1h", "0", "1h"], palette=DIVERGENT_PALETTE, ax=ax)
+               hue_order=list(keys),
+               palette=DIVERGENT_PALETTE(len(keys)),
+               ax=ax)
   _format_ax(ax)
   plt.savefig("plots/02_nodst_by_offset.png")
 
@@ -57,9 +54,11 @@ def plot_by_offset(data):
           .groupby(["DST", "OFFSET_MINUTES"]).transform(lambda x : x / x.sum())\
           .reset_index().rename(columns={"STATE": "ACCIDENTS"})
   _ = _[_["DST"] == "yes"]
-  _transform_offset_for_plot(_)
+  keys = utils.transform_offset_for_reading(_)
   sns.lineplot(data=_, x="HOUR", y="ACCIDENTS", hue="OFFSET_MINUTES",
-               hue_order=["-2h", "-1h", "0"], palette=DIVERGENT_PALETTE, ax=ax)
+               hue_order=list(keys),
+               palette=DIVERGENT_PALETTE(len(keys)),
+               ax=ax)
   _format_ax(ax)
   plt.savefig("plots/03_dst_by_offset.png")
 
