@@ -277,6 +277,7 @@ def fill(accidents, tz, tz_override, dst):
       "DST",
       "OFFSET_LNG",
       "OFFSET_MINUTES",
+      "DAY_MINUTE",
   ]
 
   accidents = pd.merge(accidents, tz, how="left", on=["STATE_ALPHA"])
@@ -307,6 +308,8 @@ def fill(accidents, tz, tz_override, dst):
     accidents["LNG"] - accidents["TZ_DST"],
     accidents["LNG"] - accidents["TZ_NO_DST"])
   accidents["OFFSET_MINUTES"] = lng_to_quant_minutes(accidents["OFFSET_LNG"])
+
+  accidents["DAY_MINUTE"] = accidents["HOUR"] * 60.0 + accidents["MINUTE"]
 
   return accidents[COLS]
 
