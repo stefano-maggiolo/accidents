@@ -8,8 +8,11 @@ import process
 import utils
 
 
+CUT_OFF_HOUR = 5
+
+
 def ks_test(d1, d2, minutes_delay=0):
-    t = lambda x: (x - 5 * 60) % (24 * 60)
+    t = lambda x: (x - CUT_OFF_HOUR * 60) % (24 * 60)
     return scipy.stats.ks_2samp(t(d1), (t(d2) + minutes_delay) % (24 * 60)).pvalue
 
 
